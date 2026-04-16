@@ -1,0 +1,41 @@
+.categories {
+  padding: 40px;
+  text-align: center;
+}
+.categories h3 {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+.categoryrow {
+  display: grid;
+  grid-template-columns: repeat(6, 2fr);
+  gap: 35px;
+}
+.categorycard {
+
+  text-align: center;
+  cursor: pointer;
+}
+.categorycard img {
+  width: 142px;      
+  height: 142px;
+  border-radius: 70%;
+
+}
+.categorycard p {
+  margin-top: 10px;
+  font-size: 15px;
+  color: #333;
+}
+.categories h3 {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+.categories h3::after {
+  content: "";
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: #ddd;
+  margin-top: 30px;
+}

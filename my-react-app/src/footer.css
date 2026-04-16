@@ -1,0 +1,97 @@
+.footer {
+  background: #2f463e;
+  color: #cfd8d3;
+  font-size: 14px;
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 40px;
+  gap: 40px;
+}
+
+.footer-left {
+  width: 50%;
+}
+
+.footer-logo {
+    margin-left: -17px;
+  height: 55px;
+  margin-bottom: 10px;
+}
+
+.footer-left p {
+  color: rgb(150, 149, 149);
+  margin-left: -17px;
+  margin-bottom: 10px;
+  line-height: 1.6;
+}
+
+.footer-left h6 {
+
+  font-size: 15px;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  color: #6fd39b;
+  margin-top: 30px;
+  margin-left: -10px;
+}
+.qr {
+  height: 80px;
+  margin-left: -10px;
+  margin-bottom: 5px;
+  margin-top: -10px;
+}
+.social-icons {
+  display: flex;
+   margin-left: -10px;
+  gap: 10px;
+  margin-top: 15px;
+}
+.social-icons img {
+  height: 30px;  
+cursor: pointer;
+}
+.footer-middle{
+  margin-top: -50px;
+  width: 10%;
+}
+.footer-right {
+   margin-top: -50px;
+  width: 17%;
+}
+.footer-middle h6,
+.footer-right h6 {
+
+  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  color: #6fd39b;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+.footer-middle p {
+  margin: 15px 0;
+  cursor: pointer;
+}
+.footer-middle p:hover {
+  color: #ffffff;
+}
+.contact-btn {
+  background: #f7931e;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+.cin {
+  margin-top: 10px;
+  font-size: 12px;
+  opacity: 0.8;
+}
+.footer-bottom {
+  text-align: center;
+  padding: 15px;
+  border-top: 1px solid #445f55;
+  font-size: 13px;
+}

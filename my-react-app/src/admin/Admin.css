@@ -1,0 +1,100 @@
+.admin-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+.admin-card {
+  width: 350px;
+  padding: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  text-align: center;
+}
+
+.admin-card input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.admin-card button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #2ecc71;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.admin-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+
+
+
+
+.view-card {
+  width: 650px;
+  padding: 30px;
+  background: white;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+  border-radius: 10px;
+}
+
+.view-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.view-header button {
+  padding: 8px 15px;
+  background: #2ecc71;
+  border: none;
+  color: white;
+  cursor:pointer;
+  border-radius: 5px;
+}
+
+
+
+
+.delete-btn {
+  margin-top: 10px;
+  background: red;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}   
+.edit-btn{
+  background: #2ecc71;
+  color: white;
+  border: none;
+  padding: 6px 19px;
+  cursor: pointer;
+  border-radius: 4px;
+
+}
+
+
+
+.product-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+.product-table th,
+.product-table td {
+  border: 1px solid #6e6c6c;
+  padding: 10px;
+  text-align: center;
+}
