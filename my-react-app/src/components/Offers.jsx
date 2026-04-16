@@ -1,3 +1,4 @@
+ const API= import.meta.env.VITE_API;
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Offers.css";
@@ -12,7 +13,7 @@ function Offers() {
   }, []);
   const fetchProducts=async () => {
     try {
-      const res=await fetch("http://localhost:3001/products");
+      const res=await fetch(`${API}/products`);
       const data=await res.json();
       setProducts(data.products);
     } catch (err) {
@@ -35,7 +36,7 @@ function Offers() {
         ):(
           products.map((item) => (
             <div onClick={() => navigate(`/product/${item._id}`)}className="product-card" key={item._id}>
-             <img className="img" src={`http://localhost:3001/uploads/${item.image}`}
+             <img className="img" src={`${API}/uploads/${item.image}`}
              />
 
      <p className="title">{item.name}</p>

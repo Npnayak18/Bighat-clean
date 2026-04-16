@@ -1,3 +1,4 @@
+ const API= import.meta.env.VITE_API;
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
@@ -37,7 +38,7 @@ function AddProduct() {
     formData.append("description", description);
     formData.append("image", image);
     try {
-      const res = await fetch("http://localhost:3001/products", {
+      const res = await fetch(`${API}/products`, {
         method: "POST",
         body: formData,
       });

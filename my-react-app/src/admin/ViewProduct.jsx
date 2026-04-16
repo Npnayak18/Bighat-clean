@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+
+ const API= import.meta.env.VITE_API;
+ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 
@@ -11,7 +13,7 @@ function ViewProduct() {
   }, []);
   const fetchProducts=async () => {
     try {
-      const res=await fetch("http://localhost:3001/products");
+      const res=await fetch(`${API}/products`);
       const data=await res.json();
       setProducts(data.products);
     } catch (err) {
@@ -20,7 +22,7 @@ function ViewProduct() {
   };
 const handleDelete=async(id)=>{
   try{
-     await fetch(`http://localhost:3001/products/${id}`,
+     await fetch(`${API}/products/${id}`,
     {
       method: "DELETE",
     });
@@ -62,7 +64,7 @@ const handleDelete=async(id)=>{
               {products.map((item) => (
                 <tr key={item._id}>
                   <td> <img
-                      src={`http://localhost:3001/uploads/${item.image}`}
+                      src={`${API}/uploads/${item.image}`}
                       alt={item.name}
                       style={{width:"40px",height:"40px",objectFit:"cover"}}
                     />
@@ -76,7 +78,6 @@ const handleDelete=async(id)=>{
                  
   <td>
   <button className="edit-btn" onClick={()=>navigate(`/admin/edit/${item._id}`)}>Edit</button>
-  
   <button className="delete-btn"onClick={()=>handleDelete(item._id)}>Delete</button>
 </td>
                   

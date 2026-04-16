@@ -1,3 +1,4 @@
+const API= import.meta.env.VITE_API;
 import "./Cart.css";
 import { useEffect, useState } from "react";
 function CartPage() {
@@ -20,7 +21,7 @@ const handleRemove=(id)=>{
 
 const handleBuy=async()=>{
 try {
-const res=await fetch("http://localhost:3001/create-checkout-session", {
+const res=await fetch(`${API}/create-checkout-session`, {
 method: "POST",
 headers: {
 "Content-Type": "application/json",
@@ -44,7 +45,7 @@ return(
   ) : (
 cartItems.map(item=>(
 <div key={item._id} className="cart-item">
-<img src={`http://localhost:3001/uploads/${item.image}`} />
+<img src={`${API}/uploads/${item.image}`} />
 
 <div className="cart-details">
 <p>{item.name}</p>

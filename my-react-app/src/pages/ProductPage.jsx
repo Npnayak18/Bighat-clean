@@ -1,3 +1,4 @@
+ const API= import.meta.env.VITE_API;
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./ProductPage.css";
@@ -11,7 +12,7 @@ const [product,setProduct]=useState(null);
   },[id]);
   const fetchProduct=async()=>{
     try {
-const res=await fetch(`http://localhost:3001/products/${id}`);
+const res=await fetch(`${API}/products/${id}`);
 const data=await res.json();
       setProduct(data.product);
     } catch (err) {
@@ -38,7 +39,7 @@ const handleBuy=async()=> {
     const singleProduct=[{ ...product,qty:1}];
     localStorage.setItem("cart",JSON.stringify(singleProduct));
     localStorage.removeItem("orderSaved");
-    const res=await fetch("http://localhost:3001/create-checkout-session", {
+    const res=await fetch(`${API}/create-checkout-session`, {
       method:"POST",
       headers: {
         "Content-Type": "application/json",
@@ -62,7 +63,7 @@ const handleBuy=async()=> {
 <div className="product-wrapper">
 <div className="left">
             <img
-              src={`http://localhost:3001/uploads/${product.image}`}
+              src={`${API}/uploads/${product.image}`}
               alt={product.name}
             />
 </div>

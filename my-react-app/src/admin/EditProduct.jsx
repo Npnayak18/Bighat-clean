@@ -1,3 +1,4 @@
+ const API= import.meta.env.VITE_API;
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "./Admin.css";
@@ -19,7 +20,7 @@ function EditProduct() {
   },[id]);
 
   const fetchProduct=async () => {
-    const res=await fetch(`http://localhost:3001/products/${id}`);
+    const res=await fetch(`${API}/products/${id}`);
     const data=await res.json();
     const p=data.product;
     setName(p.name);
@@ -41,7 +42,7 @@ function EditProduct() {
     if (image) {
       formData.append("image", image); 
     }
-    await fetch(`http://localhost:3001/products/${id}`, {
+    await fetch(`${API}/products/${id}`, {
       method: "PUT",
       body: formData,
     });
@@ -57,7 +58,7 @@ function EditProduct() {
         <h2>Edit Product</h2>
         {oldImage && (
  <img
-     src={`http://localhost:3001/uploads/${oldImage}`}
+     src={`${API}/uploads/${oldImage}`}
        alt="product"
             style={{ width:"80px",marginBottom:"10px" }}
           />

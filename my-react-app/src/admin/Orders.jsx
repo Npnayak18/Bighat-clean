@@ -1,4 +1,4 @@
-
+ const API= import.meta.env.VITE_API;
 import {useEffect,useState} from "react";
 import { useNavigate } from "react-router-dom";
 import "./Orders.css";
@@ -9,7 +9,7 @@ useEffect(()=>{fetchOrders();
   },[]);
 const fetchOrders=async()=>{
   try{
-const res=await fetch("http://localhost:3001/orders/all");
+const res=await fetch(`${API}/orders/all`);
 const data=await res.json();
 setOrders(data.orders);
 }
@@ -24,7 +24,7 @@ alert()
 
 const handleStatusChange=async(id,status)=>{
   try{
-await fetch(`http://localhost:3001/orders/${id}`,{
+await fetch(`${API}/orders/${id}`,{
   method:"PATCH",
   headers:{"Content-Type":"application/json"},
   body:JSON.stringify({status}),
