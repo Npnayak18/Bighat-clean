@@ -1,5 +1,7 @@
 import {useEffect,useRef} from "react";
 import {Link} from "react-router-dom";
+const API = import.meta.env.VITE_API;
+
 
 
 function PaymentSuccess() {
@@ -14,11 +16,16 @@ const cart=JSON.parse(localStorage.getItem("cart"))||[];
 const total=cart.reduce((acc,item)=>acc+item.price*item.qty,0);
 
 try{
-    await fetch("http://localhost:3001/orders",{
+
+
+await fetch(`${API}/orders`, {
     method:"POST",
     headers:{"Content-Type": "application/json",
     },
-body:JSON.stringify({items:cart,totalAmount:total,email:usee.com}),
+body: JSON.stringify({
+  items: cart,
+  totalAmount: total,
+  email:"nithyaprakash2164@gmail.com"}),
     });
 localStorage.removeItem("cart");
  } catch(err){console.log(err);

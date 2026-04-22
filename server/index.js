@@ -149,33 +149,63 @@ app.get("/products/:id", async (req,res)=>{
 });
 app.post("/orders", async (req, res) => {
   try {
-const{items,totalAmount}=req.body;
-const order=await Order.create({
+    const { items, totalAmount, email } = req.body;
+
+    const order = await Order.create({
       items,
       totalAmount,
-      status:"pending",
+      email,
+      status: "pending",
     });
-    res.json({success:true,order});
-  } catch(err){
-    res.status(500).json({ message:err.message});
+
+    const pdfPath = `invoice-${order._id}.pdf`;
+
+    await generatePDF(order, pdfPath);
+
+    await sendEmail(
+      email,
+      "Order Placed",
+      "Your order has been placed successfully",
+      pdfPath
+    );
+
+    res.json({ success: true, order });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
-app.get("/orders/all",async(req,res)=>{
-  const orders=await Order.find();
-  res.json({orders});
-});
 
-
-app.patch("/orders/:id",async(req,res)=>{
+app.patch("/orders/:id", async (req, res) => {
   try {
-const {status}=req.body;
-const order = await Order.findByIdAndUpdate(req.params.id,{status},{new:true});
-res.json({success:true,order});
-  } catch(err){
-    res.status(500).json({message:err.message});
+    const { status } = req.body;
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
+    );
+
+    let message = "";
+
+    if (status === "shipped") {
+      message = "Your order has been shipped 🚚";
+    }
+
+    if (status === "delivered") {
+      message = "Your order has been delivered 📦";
+    }
+
+    if (message) {
+      await sendEmail(order.email, "Order Update", message);
+    }
+
+    res.json({ success: true });
+
+  } catch (err) {
+    res.status(500).json({ message: err.message });
   }
 });
-
 
 
 app.post("/create-checkout-session", async (req,res) => {
@@ -205,8 +235,64 @@ app.post("/create-checkout-session", async (req,res) => {
 
 
 
+const nodemailer = require("nodemailer");
 
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: "nithyaprakash2164@gmail.com",
+    pass: "pkvk roxj bneo hucc",
+  },
+});
 
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
+
+const generatePDF = (order, filePath) => {
+  return new Promise((resolve) => {
+    const doc = new PDFDocument();
+    doc.pipe(fs.createWriteStream(filePath));
+
+    doc.fontSize(20).text("Invoice", { align: "center" });
+
+    doc.moveDown();
+
+    let subtotal = 0;
+
+    order.items.forEach((item) => {
+      doc.text(`${item.name} x ${item.qty} - ₹${item.price}`);
+      subtotal += item.price * item.qty;
+    });
+
+    const gst = subtotal * 0.18;
+    const total = subtotal + gst;
+
+    doc.moveDown();
+    doc.text(`Subtotal: ₹${subtotal}`);
+    doc.text(`GST (18%): ₹${gst.toFixed(2)}`);
+    doc.text(`Total: ₹${total.toFixed(2)}`);
+
+    doc.end();
+
+    doc.on("finish", resolve);
+  });
+};
+const sendEmail = async (email, subject, text, pdfPath) => {
+  await transporter.sendMail({
+    from: "nithyaprakash2164@gmail.com",
+    to: email,
+    subject,
+    text,
+    attachments: pdfPath
+      ? [
+          {
+            filename: "invoice.pdf",
+            path: pdfPath,
+          },
+        ]
+      : [],
+  });
+};
 
 
 
