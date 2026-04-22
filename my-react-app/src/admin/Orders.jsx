@@ -9,7 +9,7 @@ useEffect(()=>{fetchOrders();
   },[]);
 const fetchOrders=async()=>{
   try{
-const res=await fetch(`${API}/orders/all`);
+const res=await fetch(`${API}/orders`);
 const data=await res.json();
 setOrders(data.orders);
 }

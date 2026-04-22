@@ -165,7 +165,7 @@ const order=await Order.create({
   }
 });
 
-app.get("/orders/all",async(req,res)=>{
+app.get("/orders",async(req,res)=>{
   const orders=await Order.find();
   res.json({orders});
 });
