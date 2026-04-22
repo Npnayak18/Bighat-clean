@@ -25,7 +25,7 @@ await fetch(`${API}/orders`, {
 body: JSON.stringify({
   items: cart,
   totalAmount: total,
-  email:"nithyaprakash2164@gmail.com"}),
+}),
     });
 localStorage.removeItem("cart");
  } catch(err){console.log(err);

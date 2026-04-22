@@ -148,13 +148,14 @@ app.get("/products/:id", async (req,res)=>{
     res.status(500).json({message:err.message});
   }
 });
+
 app.post("/orders", async (req, res) => {
   try {
 const{items,totalAmount}=req.body;
 const order=await Order.create({
       items,
       totalAmount,
-      email,
+
       status:"pending",
 
     });
@@ -163,6 +164,7 @@ const order=await Order.create({
     res.status(500).json({ message:err.message});
   }
 });
+
 app.get("/orders/all",async(req,res)=>{
   const orders=await Order.find();
   res.json({orders});
