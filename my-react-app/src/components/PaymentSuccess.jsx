@@ -18,7 +18,7 @@ const total=cart.reduce((acc,item)=>acc+item.price*item.qty,0);
 try{
 
 
-await fetch(`${API}/orders`, {
+await fetch(`${API}/orders/all`, {
     method:"POST",
     headers:{"Content-Type": "application/json",
     },

@@ -256,7 +256,7 @@ app.post("/orders", async (req, res) => {
 });
 
 // ===== GET ORDERS =====
-app.get("/orders", async (req, res) => {
+app.get("/orders/all", async (req, res) => {
   const orders = await Order.find();
   res.json({ orders });
 });
