@@ -227,7 +227,6 @@ const transporter=nodemailer.createTransport({
 });
 
 const PDFDocument = require("pdfkit");
-const fs = require("fs");
 
 const generatePDF = (order, filePath) => {
   return new Promise((resolve) => {
