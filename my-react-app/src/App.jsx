@@ -63,7 +63,7 @@ element={
 />
 
 <Route path="/admin" element={<AdminLogin />} />
-<Route path="/admin/dashboard" element={<AdminDashboard />} />
+<Route path="/admin/admindashboard" element={<AdminDashboard />} />
 <Route path="/admin/add" element={<AddProduct />} />
 <Route path="/admin/view" element={<ViewProduct />} />
 <Route path="/admin/edit/:id" element={<EditProduct />} />
