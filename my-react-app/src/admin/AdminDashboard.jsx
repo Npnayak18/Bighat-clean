@@ -10,7 +10,7 @@ function AdminDashboard() {
 <button onClick={() => navigate("/admin/add")}> Add Product    </button>
 <button onClick={() => navigate("/admin/view")}>View Product</button>
 <button onClick={() => navigate("/admin/orders")}>Manage Orders</button>
-<button onClick={() => navigate("/admin/dashboard")}>Dashboard</button>
+<button onClick={() => navigate("/admin/admindashboard")}>Dashboard</button>
 </div>
 </div>
   </div>

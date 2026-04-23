@@ -9,7 +9,7 @@ function AdminLogin() {
 
   const handleLogin = () => {
     if (username==="Nithya" && password==="hahaha") {
-      navigate("/admin/admindashboard");
+      navigate("/admin/dashboard");
     } else {
       alert("Invalid");
     }

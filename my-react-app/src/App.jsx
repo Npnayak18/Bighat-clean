@@ -63,7 +63,7 @@ element={
 />
 
 <Route path="/admin" element={<AdminLogin />} />
-<Route path="/admin/admindashboard" element={<AdminDashboard />} />
+<Route path="/admin/dashboard" element={<AdminDashboard />} />
 <Route path="/admin/add" element={<AddProduct />} />
 <Route path="/admin/view" element={<ViewProduct />} />
 <Route path="/admin/edit/:id" element={<EditProduct />} />
@@ -72,7 +72,7 @@ element={
 <Route path="/payment-success" element={<PaymentSuccess />} />
 <Route path="/payment-cancel" element={<PaymentCancel />} />
 <Route path="/admin/orders" element={<Orders />} />
-<Route path="/admin/dashboard" element={<Dashboard />} />
+<Route path="/admin/admindashboard" element={<Dashboard />} />
     </Routes>
   );
 }
