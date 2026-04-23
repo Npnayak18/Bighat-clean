@@ -159,7 +159,7 @@ const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
     user: process.env.EMAIL,
-    pass: process.env.EMAIL_PASS.replace(/\s/g, ""), // 🔥 FIX SPACES
+    pass: process.env.EMAIL_PASS,
   },
 });
 
@@ -200,7 +200,7 @@ const generatePDF = (order, filePath) => {
 const sendEmail = async (email, subject, text, pdfPath) => {
   try {
     if (!email) {
-      console.log("❌ No email provided");
+      console.log(" No email provided");
       return;
     }
 
@@ -214,9 +214,9 @@ const sendEmail = async (email, subject, text, pdfPath) => {
         : [],
     });
 
-    console.log("✅ Mail sent to:", email);
+    console.log("Mail sent to:", email);
   } catch (err) {
-    console.log("❌ MAIL ERROR:", err);
+    console.log(" MAIL ERROR:", err);
   }
 };
 
@@ -236,7 +236,7 @@ app.post("/orders", async (req, res) => {
       status: "pending",
     });
 
-    const pdfPath = `/tmp/invoice-${order._id}.pdf`; // 🔥 FIX for Render
+    const pdfPath = `/tmp/invoice-${order._id}.pdf`; 
 
     await generatePDF(order, pdfPath);
 
@@ -256,7 +256,7 @@ app.post("/orders", async (req, res) => {
 });
 
 // ===== GET ORDERS =====
-app.get("/orders/all", async (req, res) => {
+app.get("/orders", async (req, res) => {
   const orders = await Order.find();
   res.json({ orders });
 });
@@ -275,11 +275,11 @@ app.patch("/orders/:id", async (req, res) => {
     let message = "";
 
     if (status === "shipped") {
-      message = "Your order has been shipped 🚚";
+      message = "Your order has been shipped ";
     }
 
     if (status === "delivered") {
-      message = "Your order has been delivered 📦";
+      message = "Your order has been delivered ";
     }
 
     if (message) {
