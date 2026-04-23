@@ -9,8 +9,9 @@ const User = require("./models/User");
 const Order = require("./models/Order");
 const Stripe = require("stripe");
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-const fs = require('fs');
-const nodemailer= require("nodemailer");
+const nodemailer = require("nodemailer");
+const PDFDocument = require("pdfkit");
+const fs = require("fs");
 require("dotenv").config();
 
 
@@ -150,83 +151,51 @@ app.get("/products/:id", async (req,res)=>{
   }
 });
 
-app.post("/orders",async(req,res)=>{
-  try{
-const{items,totalAmount,email}=req.body;
-const order=await Order.create({items,totalAmount,email,status:"pending",});
-const pdfPath=`invoice-${order._id}.pdf`;
-await generatePDF(order,pdfPath);
-await sendEmail(
-email,
-"Order Placed",
-"Your order has been placed successfully",
-pdfPath
+
+
+app.patch("/orders/:id", async (req, res) => {
+  try {
+    const { status } = req.body;
+
+    const order = await Order.findByIdAndUpdate(
+      req.params.id,
+      { status },
+      { new: true }
     );
+
+    let message = "";
+
+    if (status === "shipped") {
+      message = "Your order has been shipped ";
+    }
+
+    if (status === "delivered") { 
+      message = "Your order has been delivered ";
+    }
+
+    if (message) {
+      await sendEmail(order.email, "Order Update", message);
+    }
+
     res.json({ success: true, order });
+
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err.message });
   }
 });
 
-app.get("/orders",async(req,res)=>{
-  const orders=await Order.find();
-  res.json({orders});
+
+const transporter = nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL,
+    pass: process.env.EMAIL_PASS,
+  },
 });
 
-
-app.patch("/orders/:id",async(req,res)=>{
-  try {
-const {status}=req.body;
-const order = await Order.findByIdAndUpdate(req.params.id,{status},{new:true});
-let message="";
-if(status==="shipped"){
-message="Your order has been shipped";}
-if(status==="delivery"){
-  message="Your order has been delivered";
-}
-if (message){await sendEmail(order.email,"Order Update",message);}
-res.json({success:true,order});
-  } catch(err){
-    res.status(500).json({message:err.message});
-  }
-});
-
-
-
-app.post("/create-checkout-session", async (req,res) => {
-  try {const {items}=req.body;
-    const line_items=items.map(item =>({
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: item.name,
-        },
-        unit_amount: item.price*100,
-      },
-      quantity:item.qty,
-    }));
-  const session=await stripe.checkout.sessions.create({
-      payment_method_types:["card"],
-      line_items,
-      mode:"payment",
-      success_url: "https://bighat-clean-frontend.onrender.com/payment-success",
-      cancel_url: "https://bighat-clean-frontend.onrender.com/payment-cancel",
-    });
-    res.json({ url: session.url });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-const transporter=nodemailer.createTransport({
-  service:"gmail",
-  auth:{
-  user:process.env.EMAIL,
-  pass:process.env.EMAIL_PASS,
-},
-});
-
-const PDFDocument = require("pdfkit");
 
 const generatePDF = (order, filePath) => {
   return new Promise((resolve) => {
@@ -259,22 +228,85 @@ const generatePDF = (order, filePath) => {
 };
 
 const sendEmail = async (email, subject, text, pdfPath) => {
-  await transporter.sendMail({
-    from: process.env.EMAIL,
-    to: email,
-    subject,
-    text,
-    attachments: pdfPath
-      ? [
-          {
-            filename: "invoice.pdf",
-            path: pdfPath,
-          },
-        ]
-      : [],
-  });
-};
+  try {
+    console.log("Sending mail to:", email);
 
+    await transporter.sendMail({
+      from: process.env.EMAIL,
+      to: email,
+      subject,
+      text,
+      attachments: pdfPath
+        ? [
+            {
+              filename: "invoice.pdf",
+              path: pdfPath,
+            },
+          ]
+        : [],
+    });
+
+    console.log("Mail sent successfully ");
+
+  } catch (err) {
+    console.log("MAIL ERROR :", err);
+  }
+};
+app.post("/orders", async (req, res) => {
+  try {
+    const { items, totalAmount, email } = req.body;
+
+    const order = await Order.create({
+      items,
+      totalAmount,
+      email,
+      status: "pending",
+    });
+
+    const pdfPath = `invoice-${order._id}.pdf`;
+
+    await generatePDF(order, pdfPath);
+
+    await sendEmail(
+      email,
+      "Order Placed",
+      "Your order has been placed successfully",
+      pdfPath
+    );
+
+    res.json({ success: true, order });
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+app.post("/create-checkout-session", async (req,res) => {
+  try {const {items}=req.body;
+    const line_items=items.map(item =>({
+      price_data: {
+        currency: "inr",
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: item.price*100,
+      },
+      quantity:item.qty,
+    }));
+  const session=await stripe.checkout.sessions.create({
+      payment_method_types:["card"],
+      line_items,
+      mode:"payment",
+      success_url: "https://bighat-clean-frontend.onrender.com/payment-success",
+      cancel_url: "https://bighat-clean-frontend.onrender.com/payment-cancel",
+    });
+    res.json({ url: session.url });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 
 
