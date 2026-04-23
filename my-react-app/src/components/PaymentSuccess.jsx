@@ -20,11 +20,9 @@ try{
 
 await fetch(`${API}/orders`, {
     method:"POST",
-    headers:{"Content-Type": "application/json",
+    headers:{"Content-Type": "application/json",email:"nithyaprakash2164@gmail.com"
     },
-body: JSON.stringify({
-  items: cart,
-  totalAmount: total,
+body: JSON.stringify({items: cart,totalAmount: total,email:""
 }),
     });
 localStorage.removeItem("cart");
