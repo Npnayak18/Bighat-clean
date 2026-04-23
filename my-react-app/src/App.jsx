@@ -17,6 +17,7 @@ import CartPage from "./pages/Cart";
 import PaymentSuccess from "./components/PaymentSuccess";
 import PaymentCancel from "./components/PaymentCancell";
 import Orders from "./admin/Orders";
+import Dashboard from "./admin/Dashboard";
 function App() {
   return (
 <Routes>
@@ -71,6 +72,7 @@ element={
 <Route path="/payment-success" element={<PaymentSuccess />} />
 <Route path="/payment-cancel" element={<PaymentCancel />} />
 <Route path="/admin/orders" element={<Orders />} />
+<Route path="/admin/dashboard" element={<Dashboard />} />
     </Routes>
   );
 }

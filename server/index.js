@@ -163,131 +163,96 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// ===== PDF =====
+
 const generatePDF = (order, filePath) => {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument();
     const stream = fs.createWriteStream(filePath);
-
     doc.pipe(stream);
-
     doc.fontSize(20).text("Invoice", { align: "center" });
     doc.moveDown();
-
     let subtotal = 0;
-
     order.items.forEach((item) => {
       doc.text(`${item.name} x ${item.qty} - ₹${item.price}`);
       subtotal += item.price * item.qty;
     });
-
     const gst = subtotal * 0.18;
     const total = subtotal + gst;
-
     doc.moveDown();
     doc.text(`Subtotal: ₹${subtotal}`);
     doc.text(`GST (18%): ₹${gst.toFixed(2)}`);
     doc.text(`Total: ₹${total.toFixed(2)}`);
-
     doc.end();
-
     stream.on("finish", resolve);
     stream.on("error", reject);
   });
 };
 
-// ===== EMAIL =====
-const sendEmail = async (email, subject, text, pdfPath) => {
+const sendEmail=async(email,subject,text,pdfPath) => {
   try {
     if (!email) {
       console.log(" No email provided");
       return;
     }
-
     await transporter.sendMail({
       from: process.env.EMAIL,
       to: email,
       subject,
       text,
-      attachments: pdfPath
-        ? [{ filename: "invoice.pdf", path: pdfPath }]
-        : [],
-    });
-
+      attachments:pdfPath?[{filename:"invoice.pdf",path:pdfPath }]:[],});
     console.log("Mail sent to:", email);
   } catch (err) {
     console.log(" MAIL ERROR:", err);
   }
 };
 
-// ===== CREATE ORDER =====
-app.post("/orders", async (req, res) => {
+app.post("/orders",async(req,res)=>{
   try {
-    const { items, totalAmount, email } = req.body;
-
-    if (!email) {
+    const{items,totalAmount,email}=req.body;
+    if(!email){
       return res.status(400).json({ message: "Email required" });
     }
-
     const order = await Order.create({
       items,
       totalAmount,
       email,
       status: "pending",
     });
-
     const pdfPath = `/tmp/invoice-${order._id}.pdf`; 
-
     await generatePDF(order, pdfPath);
-
     await sendEmail(
       email,
       "Order Placed",
       "Your order has been placed successfully",
       pdfPath
     );
-
-    res.json({ success: true, order });
-
-  } catch (err) {
+    res.json({ success: true, order });} catch (err) {
     console.log("ORDER ERROR:", err);
     res.status(500).json({ message: err.message });
   }
 });
 
-// ===== GET ORDERS =====
 app.get("/orders", async (req, res) => {
   const orders = await Order.find();
   res.json({ orders });
 });
 
-// ===== UPDATE STATUS =====
-app.patch("/orders/:id", async (req, res) => {
+app.patch("/orders/:id",async(req,res) => {
   try {
-    const { status } = req.body;
-
+    const{status}=req.body;
     const order = await Order.findByIdAndUpdate(
       req.params.id,
       { status },
-      { new: true }
-    );
-
-    let message = "";
-
-    if (status === "shipped") {
-      message = "Your order has been shipped ";
+      { new: true } );
+    let message="";
+    if (status==="shipped") {message="Your order has been shipped ";
     }
-
-    if (status === "delivered") {
-      message = "Your order has been delivered ";
+    if (status==="delivered") {message="Your order has been delivered ";
     }
-
     if (message) {
-      await sendEmail(order.email, "Order Update", message);
+      await sendEmail(order.email,"Order Update",message);
     }
-
     res.json({ success: true, order });
-
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: err.message });
