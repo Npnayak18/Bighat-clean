@@ -43,6 +43,7 @@ const handleDelete=async(id)=>{
           <button onClick={() => navigate("/admin/add")}>
             Add Product
           </button>
+ 
         </div>
 
         {products.length===0 ? (
