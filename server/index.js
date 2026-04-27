@@ -67,15 +67,21 @@ mongoose
 .then(()=>console.log("MongoDB Connected"))
   .catch((err)=>console.log(err));
 
+
+
+
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads");
+}
+
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "uploads/");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now()+path.extname(file.originalname));
+    cb(null, Date.now() + path.extname(file.originalname));
   },
 });
-
 const upload=multer({ storage: storage });
 app.use("/uploads",express.static("uploads"));
 
@@ -84,21 +90,27 @@ app.use("/uploads",express.static("uploads"));
 
 app.post("/products", upload.single("image"), async (req, res) => {
   try {
-    const { name, price,category,quantity, description } = req.body;
+    console.log("BODY:", req.body);
+    console.log("FILE:", req.file);
+
+    const { name, price, category, quantity, description } = req.body;
+
     const product = await Product.create({
       name,
       price,
       category,
-     quantity,
+      quantity,
       description,
       image: req.file ? req.file.filename : "",
     });
-    res.status(201).json({ success: true, product });
+
+    res.json({ success: true, product });
+
   } catch (err) {
+    console.log("ADD PRODUCT ERROR:", err);
     res.status(500).json({ success: false, message: err.message });
   }
 });
-
 
 
 app.get("/products", async (req, res) => {
