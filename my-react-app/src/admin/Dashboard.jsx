@@ -106,13 +106,13 @@ function Dashboard() {
 
       <div className="dashboard-grid">
 
-        <div className="card"><p>Products</p><h3>{data.products}</h3></div>
-        <div className="card"><p>Orders</p><h3>{data.orders}</h3></div>
-        <div className="card"><p>Revenue</p><h3>₹{data.revenue}</h3></div>
-        <div className="card"><p>Pending</p><h3>{data.pending}</h3></div>
-        <div className="card"><p>Delivered</p><h3>{data.delivered}</h3></div>
-        <div className="card"><p>Today</p><h3>{data.todaySales}</h3></div>
-        <div className="card"><p>Month</p><h3>{data.monthSales}</h3></div>
+        <div className="cards"><p>Products</p><h3>{data.products}</h3></div>
+        <div className="cards"><p>Orders</p><h3>{data.orders}</h3></div>
+        <div className="cards"><p>Revenue</p><h3>₹{data.revenue}</h3></div>
+        <div className="cards"><p>Pending</p><h3>{data.pending}</h3></div>
+        <div className="cards"><p>Delivered</p><h3>{data.delivered}</h3></div>
+        <div className="cards"><p>Today</p><h3>{data.todaySales}</h3></div>
+        <div className="cards"><p>Month</p><h3>{data.monthSales}</h3></div>
 
       </div>
 

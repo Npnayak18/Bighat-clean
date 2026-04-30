@@ -21,7 +21,7 @@ body {
   gap: 20px;
 }
 
-.card {
+.cards {
   background: linear-gradient(145deg, #1e293b, #0f172a);
   padding: 20px;
   border-radius: 12px;
@@ -30,30 +30,30 @@ body {
   position: relative;
 }
 
-.card:hover {
+.cards:hover {
   transform: translateY(-5px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
 }
 
-.card p {
+.cards p {
   margin: 0;
   font-size: 14px;
   color: #9ca3af;
 }
 
-.card h3 {
+.cards h3 {
   margin-top: 10px;
   font-size: 22px;
   font-weight: bold;
 }
 
-.card:nth-child(1) { border-left: 5px solid #3b82f6; }
-.card:nth-child(2) { border-left: 5px solid #f97316; }
-.card:nth-child(3) { border-left: 5px solid #22c55e; }
-.card:nth-child(4) { border-left: 5px solid #ef4444; }
-.card:nth-child(5) { border-left: 5px solid #10b981; }
-.card:nth-child(6) { border-left: 5px solid #a855f7; }
-.card:nth-child(7) { border-left: 5px solid #eab308; }
+.cards:nth-child(1) { border-left: 5px solid #3b82f6; }
+.cards:nth-child(2) { border-left: 5px solid #f97316; }
+.cards:nth-child(3) { border-left: 5px solid #22c55e; }
+.cards:nth-child(4) { border-left: 5px solid #ef4444; }
+.cards:nth-child(5) { border-left: 5px solid #10b981; }
+.cards:nth-child(6) { border-left: 5px solid #a855f7; }
+.cards:nth-child(7) { border-left: 5px solid #eab308; }
 
 .charts {
   display: grid;
