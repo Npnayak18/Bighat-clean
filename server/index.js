@@ -92,9 +92,7 @@ app.post("/products", upload.single("image"), async (req, res) => {
   try {
     console.log("BODY:", req.body);
     console.log("FILE:", req.file);
-
     const { name, price, category, quantity, description } = req.body;
-
     const product = await Product.create({
       name,
       price,
@@ -103,9 +101,7 @@ app.post("/products", upload.single("image"), async (req, res) => {
       description,
       image: req.file ? req.file.filename : "",
     });
-
     res.json({ success: true, product });
-
   } catch (err) {
     console.log("ADD PRODUCT ERROR:", err);
     res.status(500).json({ success: false, message: err.message });
@@ -168,13 +164,14 @@ app.get("/products/:id", async (req,res)=>{
 
 
 const transporter = nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.EMAIL,
     pass: process.env.EMAIL_PASS,
   },
 });
-
 
 const generatePDF = (order, filePath) => {
   return new Promise((resolve, reject) => {
