@@ -49,7 +49,13 @@ const handleBuy=async()=> {
       }),
     });
   const data=await res.json();
+  console.log(data);
+
+if(data.url){
   window.location.href=data.url;
+}else{
+  alert(data.error || "Stripe error");
+}
   } catch (err) {
     alert("Error");
   }

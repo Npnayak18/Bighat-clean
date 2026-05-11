@@ -268,36 +268,55 @@ app.patch("/orders/:id",async(req,res) => {
   }
 });
 
-
 app.post("/create-checkout-session", async (req,res) => {
-  try {const {items}=req.body;
-    const line_items=items.map(item =>({
-      price_data: {
-        currency: "inr",
-        product_data: {
-          name: item.name,
+
+  try {
+
+    console.log("Stripe route hit");
+
+    console.log(process.env.STRIPE_SECRET_KEY);
+
+    const {items}=req.body;
+
+    const line_items=items.map(item => ({
+      price_data:{
+        currency:"inr",
+        product_data:{
+          name:item.name,
         },
-        unit_amount: item.price*100,
+        unit_amount:item.price*100,
       },
       quantity:item.qty,
     }));
-  const session=await stripe.checkout.sessions.create({
+
+    const session = await stripe.checkout.sessions.create({
       payment_method_types:["card"],
       line_items,
       mode:"payment",
-      success_url: "https://bighat-clean-frontend.onrender.com/payment-success",
-      cancel_url: "https://bighat-clean-frontend.onrender.com/payment-cancel",
+
+      success_url:
+      "https://bighat-clean-frontend.onrender.com/payment-success",
+
+      cancel_url:
+      "https://bighat-clean-frontend.onrender.com/payment-cancel",
     });
-    res.json({ url: session.url });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+
+    console.log(session.url);
+
+    res.json({url:session.url});
+
+  } catch(err){
+
+    console.log("STRIPE ERROR:", err);
+
+    res.status(500).json({
+      error:err.message,
+    });
   }
 });
-
-
 
 const PORT=process.env.PORT||3001;
 
 app.listen(PORT, () => {
-  console.log("Server is running on port 3001");
+  console.log(`Server is running on port ${PORT}`);
 });
